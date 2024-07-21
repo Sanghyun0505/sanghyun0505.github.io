@@ -1,0 +1,26 @@
+{
+  "site": {
+    "title": "dovi(Sanghyun0505)",
+    "base_url": "https://github.com/Sanghyun0505",
+    "base_path": "/",
+    "favicon": "/favicon.png",
+    "logoLight": "/logoLight.png",
+    "logoDark": "/logoDark.png",
+    "lang": "ko",
+    "description": "저를 감상해주세요.",
+    "pageSize": 6
+  },
+  "features": {
+    "youtube": true,
+    "dark_mode": true
+  },
+  "metadata": {
+    "meta_author": "dovi(Sanghyun0505)",
+    "meta_description": "저를 감상해주세요."
+  },
+  "author": {
+    "name": "dovi(Sanghyun0505)",
+    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.png",
+    "bio": "저를 감상해주세요."
+  }
+}
