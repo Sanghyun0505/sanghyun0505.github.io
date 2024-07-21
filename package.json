@@ -1,0 +1,45 @@
+{
+  "name": "dovi-log",
+  "type": "module",
+  "description": "저를 감상해주세요",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "Sanghyun0505"
+  },
+  "homepage": "https://github.com/Sanghyun0505/dovi.github.io",
+  "contributors": [
+    {
+      "name": "Sanghyun0505",
+      "email": "sanghyun946&@gmail.com",
+      "url": "https://github.com/Sanghyun0505"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sanghyun0505/dovi.github.io.git"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.8.2",
+    "@astrojs/mdx": "^3.1.3",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "astro": "^4.12.2",
+    "typescript": "^5.5.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.6",
+    "@astrojs/tailwind": "^5.1.0",
+    "@tailwindcss/typography": "^0.5.13",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.5"
+  }
+}
