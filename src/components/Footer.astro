@@ -1,0 +1,26 @@
+---
+import config from "@config/config.json";
+
+const year = new Date().getFullYear();
+
+const styles = {
+  footer: "mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8",
+  borderTop: "border-t border-zinc-100 dark:border-zinc-900",
+  text: "text-center text-xs/relaxed text-zinc-500 dark:text-zinc-400 mt-8 mb-8",
+  block: "block mt-2",
+  link: "text-zinc-700 decoration-dashed transition hover:text-zinc-700/75 dark:text-zinc-200 dark:hover:text-zinc-200/75",
+};
+---
+
+<footer class={styles.footer}>
+  <div class={styles.borderTop}>
+    <p class={styles.text}>
+      &copy; {year}. {config.site.title}. All rights REVERSED
+      <span class={styles.block}>
+        <a href="https://github.com/Sanghyun0505" class={styles.link}
+          >Sanghyun0505</a
+        > made dovi-log with Astro
+      </span>
+    </p>
+  </div>
+</footer>
