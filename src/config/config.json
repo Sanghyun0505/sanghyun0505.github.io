@@ -4,8 +4,6 @@
     "base_url": "https://github.com/Sanghyun0505",
     "base_path": "/",
     "favicon": "/favicon.png",
-    "logoLight": "/logoLight.png",
-    "logoDark": "/logoDark.png",
     "lang": "ko",
     "description": "저를 감상해주세요.",
     "pageSize": 9
@@ -20,7 +18,11 @@
   },
   "author": {
     "name": "dovi(Sanghyun0505)",
-    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.png",
-    "bio": "저를 감상해주세요."
+    "avatar": "/profile.png",
+    "bio": [
+      "👋 안녕하세요, FE 개발자 박상현(dovi)입니다.",
+      "DOVI-LOG는 저의 가치관, 개발, 회고 등을 기록하는 공간입니다.",
+      "재밌게 감상해주세요."
+    ]
   }
 }
