@@ -32,15 +32,13 @@
     "@astrojs/mdx": "^3.1.3",
     "@astrojs/rss": "^4.0.7",
     "@astrojs/sitemap": "^3.1.6",
+    "@vanilla-extract/css": "^1.15.3",
     "astro": "^4.12.2",
     "typescript": "^5.5.3"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "^5.1.0",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@tailwindcss/typography": "^0.5.13",
+    "@vanilla-extract/vite-plugin": "^4.0.13",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.5",
-    "tailwindcss": "^3.4.6"
+    "prettier-plugin-tailwindcss": "^0.6.5"
   }
 }
