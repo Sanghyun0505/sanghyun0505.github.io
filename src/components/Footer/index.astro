@@ -1,0 +1,20 @@
+---
+import config from "@config/config.json";
+import * as styles from "./style.css";
+
+const year = new Date().getFullYear();
+---
+
+<footer class={styles.footerStyle}>
+  <div class={styles.borderTopStyle}>
+    <p class={styles.textStyle}>
+      &copy; {year}. {config.site.title}. All rights REVERSED
+      <span class={styles.blockStyle}>
+        Made with Astro by
+        <a href="https://github.com/Sanghyun0505" class={styles.linkStyle}
+          >Sanghyun0505</a
+        >
+      </span>
+    </p>
+  </div>
+</footer>
