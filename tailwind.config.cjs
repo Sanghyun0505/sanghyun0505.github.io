@@ -5,6 +5,10 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        lightLogo: "#27272A",
+        darkLogo: "#E4E4E7",
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
