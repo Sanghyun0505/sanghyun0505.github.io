@@ -120,3 +120,15 @@ const styles = {
     </div>
   </div>
 </header>
+
+<script is:inline>
+  window.addEventListener("resize", () => {
+    const navToggle = document.getElementById("nav-toggle");
+
+    if (navToggle && navToggle instanceof HTMLInputElement) {
+      if (window.innerWidth > 768) {
+        navToggle.checked = false;
+      }
+    }
+  });
+</script>
