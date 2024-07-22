@@ -23,6 +23,8 @@
 </button>
 
 <script is:inline>
+  const el = document.documentElement;
+
   const getTheme = () => {
     const theme = window.localStorage.getItem("theme");
 
@@ -38,33 +40,28 @@
   };
 
   if (getTheme() === "light") {
-    document.documentElement.classList.remove("dark"); // 최상단 html 태그에 dark class 삭제
+    el.classList.remove("dark"); // 최상단 html 태그에 dark class 삭제
   } else {
-    document.documentElement.classList.add("dark"); // // 최상단 html 태그에 dark class 추가
+    el.classList.add("dark"); // // 최상단 html 태그에 dark class 추가
   }
 
   window.localStorage.setItem("theme", getTheme());
 
-  // 토글 기능
-  const handleToggleThemeClick = () => {
-    const el = document.documentElement;
-    el.classList.toggle("dark");
-
-    const isDark = el.classList.contains("dark");
-    window.localStorage.setItem("theme", isDark ? "dark" : "light");
-  };
-
+  // 테마 토글 기능
   const themeToggle = () => {
-    document
-      .getElementById("themeToggle")
-      .addEventListener("click", handleToggleThemeClick);
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      el.classList.toggle("dark"); // class에 dark가 있으면 삭제 아니면 추가
+
+      const isDark = el.classList.contains("dark");
+      window.localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
   };
 
   themeToggle();
 
   document.addEventListener("astro:after-swap", () => {
     if (getTheme() === "dark") {
-      document.documentElement.classList.toggle("dark", true);
+      el.classList.toggle("dark", true);
     }
 
     themeToggle();
