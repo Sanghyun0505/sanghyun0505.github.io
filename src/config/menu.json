@@ -5,10 +5,6 @@
       "url": "/"
     },
     {
-      "name": "About",
-      "url": "/about"
-    },
-    {
       "name": "Tags",
       "url": "/tags"
     },
