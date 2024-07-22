@@ -7,6 +7,7 @@ import { createOgImage } from "@utils/createOgImage";
 import "@styles/global.css";
 
 import { ViewTransitions } from "astro:transitions";
+import Hero from "@components/Hero.astro";
 
 export interface Props {
   title?: string;
@@ -91,6 +92,7 @@ const styles = {
 
   <body class={styles.bodyStyle}>
     <Header />
+    {!blogpost && <Hero />}
 
     <main class={styles.mainStyle}>
       <slot />
