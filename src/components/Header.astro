@@ -14,10 +14,9 @@ const styles = {
   maxWidthStyle: "mx-auto max-w-screen-lg px-4 py-8 sm:px-6 sm:py-12 lg:px-8",
   spaceBetweenStyle:
     "flex items-start justify-between gap-2 sm:gap-4 md:items-center",
-  blockStyle: "block dark:hidden",
-  linkImageStyle: "logo flex items-center",
+  linkImageStyle:
+    "logo text-lightLogo dark:text-darkLogo flex items-center text-2xl font-black",
   imageStyle: "w-20 rounded bg-zinc-950 bg-opacity-0",
-  hiddenStyle: "hidden dark:block",
   relativeStyle: "relative order-3 flex",
   hamburgerIconLabelStyle:
     "order-2 flex cursor-pointer items-center text-zinc-400 md:hidden",
@@ -38,35 +37,9 @@ const styles = {
 <header class={styles.headerStyle}>
   <div class={styles.maxWidthStyle}>
     <div class={styles.spaceBetweenStyle}>
-      <div class={styles.blockStyle}>
+      <div>
         <a href="/" class={styles.linkImageStyle} aria-current="page">
-          <figure>
-            <Image
-              src={config.site.logoLight}
-              width={500}
-              height={200}
-              decoding="async"
-              loading="lazy"
-              class={styles.imageStyle}
-              alt={config.site.title}
-            />
-          </figure>
-        </a>
-      </div>
-
-      <div class={styles.hiddenStyle}>
-        <a href="/" class={styles.linkImageStyle} aria-current="page">
-          <figure>
-            <Image
-              src={config.site.logoDark}
-              width={500}
-              height={200}
-              decoding="async"
-              loading="lazy"
-              class={styles.imageStyle}
-              alt={config.site.title}
-            />
-          </figure>
+          DOVI-LOG
         </a>
       </div>
 
