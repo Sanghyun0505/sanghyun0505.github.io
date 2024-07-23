@@ -1,0 +1,33 @@
+---
+import CategoryIcon from "@assets/icons/CategoryIcon.astro";
+import Base from "@layouts/Base.astro";
+import { getTaxonomy } from "@utils/getAllTags";
+
+const allCategories = await getTaxonomy("blog", "categories");
+
+const uniqueCategories = [
+  ...new Set(allCategories.map((item) => item.slug)),
+].map((slug) => allCategories.find((cat) => cat.slug === slug));
+---
+
+<Base>
+  <section class="gird-cols-1 grid">
+    <h1 class="mb-8 text-2xl font-bold md:text-3xl">Categories</h1>
+    <ul class="flex flex-wrap gap-3 text-zinc-500 dark:text-zinc-400">
+      {
+        uniqueCategories.map((item) => (
+          <li class="mr-4 flex items-center justify-between">
+            <CategoryIcon />
+            <a
+              class="text-lg capitalize text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
+              href={`/categories/${item?.slug}`}
+              title={`태그가 있는 게시물 보기: ${item?.name}`}
+            >
+              {item?.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
