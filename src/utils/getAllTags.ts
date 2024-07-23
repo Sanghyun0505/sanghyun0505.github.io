@@ -53,9 +53,9 @@ export const getSinglePage = async (collection: any) => {
 };
 
 export const taxonomyFilter = (posts: any[], name: string, key: any) => {
-  posts.filter((post) => {
-    return post.data[name]
+  return posts.filter((post) =>
+    post.data[name]
       .map((name: string) => getRidOfHypensToSlug(name))
-      .includes(getRidOfHypensToSlug(key));
-  });
+      .includes(getRidOfHypensToSlug(key))
+  );
 };
