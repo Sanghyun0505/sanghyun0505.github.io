@@ -1,0 +1,44 @@
+---
+import Base from "@layouts/Base.astro";
+import { getTaxonomy } from "@utils/getAllTags";
+
+const tags = await getTaxonomy("blog", "tags");
+
+const textClasses = [
+  "text-3xl text-cyan-400 capitalize",
+  "text-xl text-total-400 capitalize",
+  "text-md text-red-400 capitalize",
+  "text-lg text-green-400 capitalize",
+  "text-sm text-orange-400 capitalize",
+  "text-lg text-zinc-400 capitalize",
+  "text-4xl text-red-400 capitalize",
+  "text-xs text-cyan-400 capitalize",
+];
+
+const getRandomClass = (classList: string[]) => {
+  const randomIndex = Math.floor(Math.random() * classList.length);
+  return textClasses[randomIndex];
+};
+---
+
+<Base meta_title="DOVI-LOG | Tags">
+  <section class="grid grid-cols-1">
+    <h1 class="mb-8 text-2xl font-bold md:text-3xl">Tags</h1>
+
+    <ul class="align-center flex flex-wrap justify-center gap-3">
+      {
+        tags.map((item) => (
+          <li>
+            <a
+              class={getRandomClass(textClasses)}
+              href={`/tags/${item.slug}`}
+              title={`테그가 있는 블로그 글 보기: ${item.name}`}
+            >
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
