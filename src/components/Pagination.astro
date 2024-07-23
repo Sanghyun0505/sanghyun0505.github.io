@@ -9,21 +9,18 @@ interface Props {
   nextUrl: string | undefined;
 }
 
-const { ...pagination } = Astro.props;
+const { length, currentPage, prevUrl, nextUrl } = Astro.props;
 
-const paginationList = Array.from(
-  { length: pagination.length },
-  (_, i) => i + 1
-);
+const paginationList = Array.from({ length: length }, (_, i) => i + 1);
 ---
 
 <nav class="mt-12">
   <ol class="flex justify-center gap-3 text-xs font-medium">
     {
-      pagination.prevUrl && (
+      prevUrl && (
         <li>
           <a
-            href={pagination.prevUrl}
+            href={prevUrl}
             class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-zinc-900 dark:text-white rtl:rotate-180"
           >
             <PrevIcon />
@@ -37,8 +34,7 @@ const paginationList = Array.from(
           <a
             href={`/blog/${item === 1 ? "" : item}`}
             class={`block h-8 w-8 rounded border text-center leading-8 text-zinc-900 dark:text-white ${
-              pagination.currentPage === item &&
-              "border-zinc-600 bg-zinc-500 !text-white"
+              currentPage === item && "border-zinc-600 bg-zinc-500 !text-white"
             }`}
           >
             {item}
@@ -47,10 +43,10 @@ const paginationList = Array.from(
       ))
     }
     {
-      pagination.nextUrl && (
+      nextUrl && (
         <li>
           <a
-            href={pagination.nextUrl}
+            href={nextUrl}
             class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-zinc-900 dark:text-white rtl:rotate-180"
           >
             <NextIcon />
