@@ -5,18 +5,12 @@ import { Image } from "astro:assets";
 ---
 
 <article class="bg-zinc-50 dark:bg-zinc-900">
-  <div
-    class="mx-auto max-w-screen-lg px-4 py-0 pb-6 sm:px-6 sm:pb-12 lg:px-8"
-  >
+  <div class="mx-auto max-w-screen-lg px-4 py-0 pb-6 sm:px-6 sm:pb-12 lg:px-8">
     <div class="flex items-start justify-between">
       <div class="w-3/5">
         {
           config.author.bio.map((item) => (
-            <p
-              class=
-                "mt-1.5 text-sm text-zinc-500 dark:text-zinc-400 md:text-lg"
-              }
-            >
+            <p class="mt-1.5 text-sm text-zinc-500 dark:text-zinc-400 md:text-lg">
               {item}
             </p>
           ))
