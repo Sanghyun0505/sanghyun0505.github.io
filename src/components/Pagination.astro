@@ -1,0 +1,62 @@
+---
+import NextIcon from "@assets/icons/NextIcon.astro";
+import PrevIcon from "@assets/icons/PrevIcon.astro";
+
+interface Props {
+  length: number;
+  currentPage: number;
+  prevUrl: string | undefined;
+  nextUrl: string | undefined;
+}
+
+const { ...pagination } = Astro.props;
+
+const paginationList = Array.from(
+  { length: pagination.length },
+  (_, i) => i + 1
+);
+---
+
+<nav class="mt-12">
+  <ol class="flex justify-center gap-3 text-xs font-medium">
+    {
+      pagination.prevUrl && (
+        <li>
+          <a
+            href={pagination.prevUrl}
+            class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-zinc-900 dark:text-white rtl:rotate-180"
+          >
+            <PrevIcon />
+          </a>
+        </li>
+      )
+    }
+    {
+      paginationList.map((item) => (
+        <li>
+          <a
+            href={`/blog/${item === 1 ? "" : item}`}
+            class={`block h-8 w-8 rounded border text-center leading-8 text-zinc-900 dark:text-white ${
+              pagination.currentPage === item &&
+              "border-zinc-600 bg-zinc-500 !text-white"
+            }`}
+          >
+            {item}
+          </a>
+        </li>
+      ))
+    }
+    {
+      pagination.nextUrl && (
+        <li>
+          <a
+            href={pagination.nextUrl}
+            class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-zinc-900 dark:text-white rtl:rotate-180"
+          >
+            <NextIcon />
+          </a>
+        </li>
+      )
+    }
+  </ol>
+</nav>
