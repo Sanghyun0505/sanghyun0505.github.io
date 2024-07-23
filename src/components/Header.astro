@@ -17,7 +17,7 @@ const { main } = menu;
       <div>
         <a
           href="/"
-          class="logo text-lightLogo dark:text-darkLogo flex items-center text-2xl font-black select-none active:opacity-70"
+          class="logo flex select-none items-center text-2xl font-black text-lightLogo active:opacity-70 dark:text-darkLogo"
           aria-current="page"
         >
           DOVI-LOG
@@ -67,11 +67,7 @@ const { main } = menu;
       <ul class="ml-auto hidden items-center gap-6 md:flex lg:flex">
         {
           main.map((menu) => (
-            <li
-              class=
-                "text-md block rounded-lg px-2 py-2 text-zinc-500 transition-all hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
-              }
-            >
+            <li class="text-md block rounded-lg px-2 py-2 text-zinc-500 transition-all hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200">
               <a href={menu.url} class="relative flex items-center">
                 {menu.name === "Home" ? <HomeIcon /> : menu.name}
               </a>
