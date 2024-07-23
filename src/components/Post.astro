@@ -27,7 +27,7 @@ const { ...post } = Astro.props;
     <a href={`/blog/${post.slug}`}>
       <figure class="h-quto w-auto object-cover md:h-[150px]">
         <Image
-          src={post.data.heroImage || "/blog-placeholder.jpg"}
+          src={post.data.heroImage || "/thumbnails/basic.jpg"}
           alt={post.data.title}
           class="transition duration-300 ease-in-out hover:scale-110"
           width={960}
