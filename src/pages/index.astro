@@ -1,5 +1,23 @@
 ---
 import Base from "@layouts/Base.astro";
+import config from "@config/config.json";
+import { getCollection } from "astro:content";
+import Post from "@components/Post.astro";
+import BlogPageNavigation from "@components/BlogPageNavigation.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
-<Base />
+<Base>
+  <div
+    class="mx-auto grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+  >
+    {posts?.slice(0, config.site.pageSize).map((item) => <Post {...item} />)}
+  </div>
+
+  <div class="mt-12 flex w-full justify-end">
+    <BlogPageNavigation />
+  </div>
+</Base>
