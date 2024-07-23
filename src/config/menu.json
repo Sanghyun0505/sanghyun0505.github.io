@@ -5,12 +5,12 @@
       "url": "/"
     },
     {
-      "name": "Tags",
-      "url": "/tags"
-    },
-    {
       "name": "Categories",
       "url": "/categories"
+    },
+    {
+      "name": "Tags",
+      "url": "/tags"
     }
   ]
 }
