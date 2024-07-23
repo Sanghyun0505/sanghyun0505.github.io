@@ -25,11 +25,6 @@ const ogImage = createOgImage({
   title: meta_title ? meta_title : title ? title : config.site.title,
   meta: [config.site.title, config.site.base_url].join(" · "),
 });
-
-const styles = {
-  bodyStyle: "bg-white dark:bg-zinc-900/95",
-  mainStyle: "mx-auto max-w-screen-lg px-4 py-8 sm:px-6 sm:py-12 lg:px-8",
-};
 ---
 
 <!doctype html>
@@ -90,11 +85,11 @@ const styles = {
     <ViewTransitions />
   </head>
 
-  <body class={styles.bodyStyle}>
+  <body class={"bg-white dark:bg-zinc-900/95"}>
     <Header />
     {!blogpost && <Hero />}
 
-    <main class={styles.mainStyle}>
+    <main class={"mx-auto max-w-screen-lg px-4 py-8 sm:px-6 sm:py-12 lg:px-8"}>
       <slot />
     </main>
 
