@@ -1,89 +1,83 @@
 ---
+import { Image } from "astro:assets";
+import Base from "./Base.astro";
+import config from "@config/config.json";
+import CalenderIcon from "@assets/icons/CalenderIcon.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import CategoryIcon from "@assets/icons/CategoryIcon.astro";
+import { addHypensToSlug } from "@utils/slug";
 import type { CollectionEntry } from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import FormattedDate from "../components/FormattedDate.astro";
+import { defineAction } from "astro:actions";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { ...blogPost } = Astro.props;
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={title} description={description} />
-    <style>
-      main {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0;
-      }
-      .hero-image {
-        width: 100%;
-      }
-      .hero-image img {
-        display: block;
-        margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
-      }
-      .prose {
-        width: 720px;
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
-      }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
-      }
-      .title h1 {
-        margin: 0 0 0.5em 0;
-      }
-      .date {
-        margin-bottom: 0.5em;
-        color: rgb(var(--gray));
-      }
-      .last-updated-on {
-        font-style: italic;
-      }
-    </style>
-  </head>
+<Base
+  meta_title={"DOVI-LOG | " + blogPost.title}
+  description={blogPost.description}
+  image={blogPost.heroImage}
+>
+  <article>
+    <div class="mb-8 block overflow-hidden rounded-lg">
+      <figure class="h-auto w-auto object-cover md:h-[480px]">
+        <Image
+          class="transition duration-300 ease-in-out hover:scale-110"
+          src={blogPost.heroImage || "/blog-placeholder"}
+          alt={blogPost.title}
+          width={960}
+          height={480}
+          decoding="async"
+          loading="lazy"
+        />
+      </figure>
+    </div>
 
-  <body>
-    <Header />
-    <main>
-      <article>
-        <div class="hero-image">
+    <div class="md:col-10 mb-12 text-center">
+      <h1 class="text-2xl font-bold md:text-4xl">
+        {blogPost.title}
+      </h1>
+
+      <div
+        class="text-text mt-4 flex flex-wrap items-center justify-center text-zinc-800 dark:text-zinc-200"
+      >
+        <div class="mx-3 mt-2 flex flex-wrap items-center font-medium">
+          <CalenderIcon />
+          <FormattedDate date={blogPost.pubDate} />
+        </div>
+
+        <div class="mx-3 mt-2 flex flex-wrap items-center font-medium">
+          <CategoryIcon />
           {
-            heroImage && (
-              <img width={1020} height={510} src={heroImage} alt="" />
-            )
+            blogPost.categories.slice(0, 1).map((item) => (
+              <a
+                href={`/categories/${addHypensToSlug(item)}`}
+                class="hover:text-primary mr-2 font-medium capitalize"
+              >
+                {item}
+              </a>
+            ))
           }
         </div>
-        <div class="prose">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-            </div>
-            <h1>{title}</h1>
-            <hr />
-          </div>
-          <slot />
-        </div>
-      </article>
-    </main>
-    <Footer />
-  </body>
-</html>
+      </div>
+    </div>
+
+    <div class="prose-md prose prose-blue min-w-full md:prose-lg">
+      <slot />
+    </div>
+
+    <div class="mt-8">
+      {
+        blogPost.tags.map((item) => (
+          <a
+            href={`/tags/${addHypensToSlug(item)}`}
+            class="mb-2 mr-2 inline-block rounded-full bg-zinc-200 px-3 py-1 text-sm font-semibold capitalize text-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
+          >
+            #{item}
+          </a>
+        ))
+      }
+    </div>
+  </article>
+</Base>
