@@ -63,4 +63,17 @@ const { ...post } = Astro.props;
       {post.data.description}
     </p>
   </div>
+
+  <div class="mt-4">
+    {
+      post.data.tags.slice(0, 2).map((item) => (
+        <a
+          href={`/tags/${addHypensToSlug(item)}`}
+          class="mb-2 mr-2 inline-block rounded-full bg-zinc-200 px-3 py-1 text-sm font-semibold capitalize text-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
+        >
+          #{item}
+        </a>
+      ))
+    }
+  </div>
 </article>
