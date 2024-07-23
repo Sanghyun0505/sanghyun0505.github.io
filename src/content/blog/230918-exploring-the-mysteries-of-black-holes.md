@@ -2,7 +2,7 @@
 title: "Exploring the Mysteries of Black Holes"
 description: "Delve into the enigmatic world of black holes and learn about their fascinating properties."
 pubDate: "2021-09-19T01:19:52.704Z"
-heroImage: "/blog-placeholder.jpg"
+heroImage: "/thumbnails/basic.jpg"
 categories: ["astrophysics"]
 tags: ["Black Holes", "Astronomy", "Physics", "Event Horizon"]
 author: '["gndx"]'

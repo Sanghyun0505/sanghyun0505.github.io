@@ -2,7 +2,7 @@
 title: "Time Travel Wormholes and Faster-Than-Light Travel"
 description: "Delve into the realm of theoretical physics and the possibilities of traversable wormholes and warp drives."
 pubDate: "2021-09-19T01:21:47.613Z"
-heroImage: "/blog-placeholder.jpg"
+heroImage: "/thumbnails/basic.jpg"
 categories: ["theoretical physics"]
 tags: ["Wormholes", "Warp Drives", "Einstein", "Faster-Than-Light Travel"]
 author: '["gndx"]'
