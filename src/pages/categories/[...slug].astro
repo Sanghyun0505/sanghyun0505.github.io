@@ -1,0 +1,35 @@
+---
+import Post from "@components/Post.astro";
+import Base from "@layouts/Base.astro";
+import { getSinglePage, getTaxonomy, taxonomyFilter } from "@utils/getAllTags";
+import { getRidOfHypensToSlug } from "@utils/slug";
+
+export const getStaticPaths = async () => {
+  const categories = await getTaxonomy("blog", "categories");
+
+  return categories.map((item) => {
+    return {
+      params: {
+        slug: item.slug,
+      },
+    };
+  });
+};
+
+const { slug } = Astro.params;
+
+const posts = await getSinglePage("blog");
+const filterByCategories = taxonomyFilter(posts, "categories", slug);
+---
+
+<Base>
+  <h1 class="mb-8 text-2xl font-bold capitalize md:text-3xl">
+    Category: {getRidOfHypensToSlug(slug)}
+  </h1>
+
+  <div
+    class="mx-auto grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+  >
+    {filterByCategories.map((item) => <Post {...item} />)}
+  </div>
+</Base>

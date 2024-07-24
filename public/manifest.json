@@ -1,0 +1,30 @@
+{
+  "name": "DOVI-LOG",
+  "short_name": "DOVI-LOG",
+  "description": "저를 감상해주세요.",
+  "theme_color": "#ffffff",
+  "background_color": "#0e0d0d",
+  "display": "minimal-ui",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "ES",
+  "icons": [
+    {
+      "src": "/favicons/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/favicon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/favicon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["blog"]
+}

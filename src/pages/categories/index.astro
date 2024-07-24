@@ -1,0 +1,35 @@
+---
+import CategoryIcon from "@assets/icons/CategoryIcon.astro";
+import Base from "@layouts/Base.astro";
+import { getTaxonomy } from "@utils/getAllTags";
+import { getRidOfHypensToSlug } from "@utils/slug";
+
+const allCategories = await getTaxonomy("blog", "categories");
+
+// 중복을 제거한 고유한 슬러그 카테고리 생성
+const uniqueSlugsCategories = [
+  ...new Set(allCategories.map((item) => item.slug)),
+];
+---
+
+<Base meta_title="DOVI-LOG | Categories">
+  <section class="gird-cols-1 grid">
+    <h1 class="mb-8 text-2xl font-bold md:text-3xl">Categories</h1>
+    <ul class="flex flex-wrap gap-3 text-zinc-500 dark:text-zinc-400">
+      {
+        uniqueSlugsCategories.map((item) => (
+          <li class="mr-4 flex items-center justify-between">
+            <CategoryIcon />
+            <a
+              class="text-lg capitalize text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
+              href={`/categories/${item}`}
+              title={`카테고리가 있는 블로그 글 보기: ${item}`}
+            >
+              {getRidOfHypensToSlug(item)}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@layouts/Base.astro";
+import config from "@config/config.json";
+import Post from "@components/Post.astro";
+import Pagination from "@components/Pagination.astro";
+import type { PaginateFunction } from "astro";
+
+export const getStaticPaths = async ({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) => {
+  const allPosts = await getCollection("blog");
+
+  const formattedPosts = allPosts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  return paginate(formattedPosts, {
+    pageSize: config.site.pageSize,
+  });
+};
+
+const { page } = Astro.props;
+---
+
+<Base meta_title="DOVI-LOG | Blog">
+  <h1 class="mb-8 text-2xl font-bold md:text-3xl">Blog</h1>
+
+  <div
+    class="mx-auto grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+  >
+    {page.data?.map((item) => <Post {...item} />)}
+  </div>
+
+  <Pagination
+    length={page.lastPage}
+    currentPage={page.currentPage}
+    prevUrl={page.url.prev}
+    nextUrl={page.url.next}
+  />
+</Base>

@@ -1,21 +1,23 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import BlogPost from "../../layouts/BlogPost.astro";
+import { getCollection } from "astro:content";
+import Code from "@components/Code.astro";
+import BlogPost from "@layouts/BlogPost.astro";
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const posts = await getCollection("blog");
+
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
-}
-type Props = CollectionEntry<"blog">;
+};
 
 const post = Astro.props;
-
 const { Content } = await post.render();
 ---
 
 <BlogPost {...post.data}>
-  <Content />
+  <!-- Content는 mdx 파일을 렌더링 시켜주는 컴포넌트이다.
+  {{pre: Code}}를 넘겨주면 마크다운에서 코드블록을 복사 및 부가기능을 적용할 수 있다.  -->
+  <Content component={{ pre: Code }} />
 </BlogPost>
