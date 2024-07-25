@@ -1,5 +1,5 @@
 ---
-import Post from "@components/Post.astro";
+import Post, { type PostProps } from "@components/Post.astro";
 import Base from "@layouts/Base.astro";
 import { getSinglePage, getTaxonomy, taxonomyFilter } from "@utils/getAllTags";
 import { getRidOfHypensToSlug } from "@utils/slug";
@@ -19,7 +19,7 @@ export const getStaticPaths = async () => {
 const { slug } = Astro.params;
 
 const posts = await getSinglePage("blog");
-const filterByTags = taxonomyFilter(posts, "tags", slug);
+const filterByTags = taxonomyFilter(posts as PostProps[], "tags", slug);
 ---
 
 <Base>

@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import type { MDXInstance } from "astro";
 import { addHypensToSlug, getRidOfHypensToSlug } from "./slug";
+import type { PostProps } from "@components/Post.astro";
 
 interface Post {
   title: string;
@@ -18,9 +19,11 @@ interface PostMDXInstance extends MDXInstance<Post> {
 
 export const getAllTags = (posts: PostMDXInstance[] = []) => {
   const allTags = new Set<string>();
+
   posts.forEach((post) => {
     post.data?.tags?.map((tag: string) => allTags.add(tag.toLowerCase()));
   });
+
   return [...allTags];
 };
 
@@ -56,7 +59,7 @@ interface PageData {
   };
 }
 
-export const getSinglePage = async (collection: any) => {
+export const getSinglePage = async (collection: "blog") => {
   const allPage = (await getCollection(collection)) as PageData[];
   const removeIndex = allPage.filter((data) => data.id.match(/^(?!-)/));
   const removeDrafts = removeIndex.filter((data) => !data.data.draft);
@@ -64,10 +67,16 @@ export const getSinglePage = async (collection: any) => {
   return removeDrafts;
 };
 
-export const taxonomyFilter = (posts: any[], name: string, key: any) => {
-  return posts.filter((post) =>
-    post.data[name]
-      .map((name: string) => getRidOfHypensToSlug(name))
-      .includes(getRidOfHypensToSlug(key))
-  );
+export const taxonomyFilter = (
+  posts: PostProps[],
+  name: keyof Post,
+  key: string
+) => {
+  return posts.filter((post) => {
+    if (Array.isArray(post.data[name])) {
+      return post.data[name]
+        .map((name) => getRidOfHypensToSlug(name))
+        .includes(getRidOfHypensToSlug(key));
+    }
+  });
 };
