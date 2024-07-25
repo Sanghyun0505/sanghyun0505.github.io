@@ -1,4 +1,4 @@
-export const addHypensToSlug = (text: string): string => {
+export const addHypensToSlug = (text: string) => {
   return text
     .toString()
     .replace(/\s+/g, "-")
@@ -6,6 +6,6 @@ export const addHypensToSlug = (text: string): string => {
     .replace(/-+$/, "");
 };
 
-export const getRidOfHypensToSlug = (text: string): string => {
+export const getRidOfHypensToSlug = (text: string) => {
   return text.toString().replace(/-/g, " ");
 };

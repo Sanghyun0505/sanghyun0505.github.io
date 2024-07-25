@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import FormattedDate from "./FormattedDate.astro";
 import { addHypensToSlug } from "@utils/slug";
 
-interface Props {
+export interface PostProps {
   id: string;
   slug: string;
   body: string;
@@ -19,7 +19,7 @@ interface Props {
   };
 }
 
-const { slug, data } = Astro.props;
+const { slug, data } = Astro.props as PostProps;
 ---
 
 <article class="flex w-full flex-col items-start">
