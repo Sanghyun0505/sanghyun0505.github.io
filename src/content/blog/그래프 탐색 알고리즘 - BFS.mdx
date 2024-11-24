@@ -26,18 +26,31 @@ dfs가 경로기반의 문제를 해결할 때 사용하는 거라면, bfs는 �
 ![bfs 사진](/thumbnails/20241124.jpeg)
 위 사진도 dfs 글처럼 제가 그린 트리입니다 ㅎㅎ, 이번엔 큐로 설명을 해야겠군요. 엄청 간단해요
 
+예시 트리
+
+```
+   A
+ / | \
+B  C  D
+|     |
+E     F
+```
+
 **1. 시작노드를 큐에 넣고 순회**
 
 - 이때 visited 배열에 방문기록을 해놓는다.
+- queue: [A]
 
 **2. 큐에서 front 노드를 추출**
 
 - shift 메서드를 사용해 추출과 동시에 queue에서 제거
-- 해당 노드의 자식노드를 queue에 담는데, 방문하지 않은 자식노드만 삽입
+- 해당 노드의 연결노드를 queue에 담는데, 방문하지 않은 자식노드만 삽입
+- queue: [B, C, D]
 
 **3. 반복**
 
 - 위 과정을 queue가 빌 때까지 실행
+- queue: [C, D, E] -> [D, E] -> [E, F] -> [F] -> []
 
 ### 코드
 
@@ -70,7 +83,7 @@ function bfs(graph, queue, visited) {
 
     // 그래프에서 해당 노드의 자식노드값 참조
     graph[node].forEach((neighbor) => {
-      // 방문하지 않은 자식노드만 queue에 추가
+      // 방문하지 않은 연결노드만 queue에 추가
       // 그리고 노드를 방문했음을 기록
       if (!visited[neighbor]) {
         queue.push(neighbor);
