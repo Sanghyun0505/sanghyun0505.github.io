@@ -1,0 +1,330 @@
+---
+title: "SWR에 대해 알아보자"
+description: "데이터 패칭과 캐싱을 쉽게 해준다고?"
+pubDate: "Nov 27 2024"
+heroImage: "/thumbnails/20241127.png"
+categories: ["Tech"]
+authors: ["dovi(Sanghyun0505)"]
+tags: ["SWR", "Next.js"]
+---
+
+### 개요
+
+Next.js에 대해 생각해보다 문득 SWR이란 것이 번뜩 떠올랐다. 단지 React-Query처럼 데이터를 패칭과 캐싱을 쉽게 해주는 라이브러리라고 알고 있는데
+이번 기회에 정리 겸 공부해보게 되었다.
+
+### SWR이란?
+
+SWR은 HTTP 캐시 무효 전략인 "데이터는 캐싱되며, 시간이 지나면 정체성을 잃는다"는 HTTP SWR(Steal While Revalidate) 패턴에 기반한 `stale-while-revalidate`에서 유래되었는데
+캐싱을 지원하여 이전 데이터를 재사용하고 fetch로 요청하며 최종적으로 최신화된 데이터를 가져온다. 이를 통해 SWR을 사용하면 개발자는 별도의 로직없이 자동으로 데이터를 업데이트 받을 수 있다.
+
+또한, 많은 것을 지원 및 제공해주고 있다. 공식문서를 찾아보니 아래와 같은 것들이 있었다.
+
+- 빠르고, 가볍고, 재사용 가능한 데이터 가져오기
+- 내장된 캐시 및 요청 중복 제거
+- 실시간 경험(업데이트)
+- 전송 및 프로토콜에 구애받지 않음
+- SSR / ISR / SSG 지원
+- TypeScript 지원
+- React Native에서 사용 가능
+
+이 뿐만 아니라 페이지 네비게이션이나 React Suspense 등등을 같이 활용하여 데이터 패칭을 구현할 수 있다고 한다.
+사용법에 대해 알아보자.
+
+### How To Use?
+
+- pnpm add swr
+- npm i swr
+- yarn add swr
+
+으로 패키지 매니저에 맞게 선택하여 라이브러리를 설치한다.
+
+기본적인 사용법은 아래와 같다.
+
+```jsx
+const { data, error, isLoading } = useSWR(key, fetcher, options);
+```
+
+데이터를 패칭하기 위해선 useSWR이라는 훅을 사용하는데, 파라미터를 보면 `key`, `fetcher`, `options`가 있다.
+
+- key: 요청을 위한 고유한 키 문자열이다. 상황에 따라 함수, 배열, null이 key가 될 수 있다.
+- fetcher: Promise를 반환하는 데이터 패칭 함수이다.(Fetch, Axios, GraphQL)
+- options: 데이터를 어떻게 설정할 것인지를 다루는 객체이다.
+
+그리고 반환 값으로는 `data`, `error`, `isLoading`, `isValidating`, `muate`가 있다.
+
+- data: 말 그대로 SWR을 사용하여 반환된 실제 값(로드되지 않았다면 undefined)이다.
+- error: fetcher가 던진 에러(없다면 undefined)
+- isLoading: 진행 중인 요청이 있으며 로드된 데이터가 없는 경우(이전 데이터는 로드된 데이터로 간주하지 않음)에 사용한다.
+- isValidating: 요청이나 갱신 로딩의 여부를 나타내는 값이다.
+- muate(data?, options?): 캐시된 데이터를 업데이트하기 위한 함수이다.
+
+**재사용 가능하게 만들기**
+
+```jsx
+function useUserMy() {
+  const { data, error, isLoading } = useSWR("/api/user/my", fetcher);
+
+  return {
+    user: data,
+    isLoading,
+    isError: error,
+  };
+}
+```
+
+이렇게 만든 커스텀 훅을 아래 코드처럼 호출해 사용한다.
+
+```jsx
+function Avatar({ id }) {
+  const { user, isLoading, isError } = useUserMy();
+
+  if (isLoading) return <Spinner />;
+
+  if (isError) return <Error />;
+
+  return <img src={user.avatar} />;
+}
+```
+
+isLoading, error 등의 서버 상태 관리 변수를 지원해줘서 개발자는 컴포넌트에서 사용되는 데이터가 무엇인지만 명시하면 된다.
+
+그리고 useSWR의 장점이 존재하는데, 이를 코드와 함께 설명하겠다.
+먼저 기존 아래코드처럼 SWR을 사용하지 않고 전역적으로 데이터를 가져와 props로 전달하는 구조를 볼 수 있다.
+
+```jsx
+function Page() {
+  const [user, setUser] = useState(null);
+
+  // 데이터 가져오기
+  useEffect(() => {
+    fetch("/api/user")
+      .then((res) => res.json())
+      .then((data) => setUser(data));
+  }, []);
+
+  // 전역 로딩 상태
+  if (!user) return <Spinner />;
+
+  return (
+    <div>
+      <Avatar user={user} />
+      <Content user={user} />
+    </div>
+  );
+}
+
+// 자식 컴포넌트
+function Navbar({ user }) {
+  return (
+    <div>
+      <Avatar user={user} />
+    </div>
+  );
+}
+
+function Content({ user }) {
+  return <h1>Welcome back, {user.name}</h1>;
+}
+
+function Avatar({ user }) {
+  return <img src={user.avatar} alt={user.name} />;
+}
+```
+
+이러한 구조는 페이지에 더 많은 데이터가 추가되면 유지보수하기가 힘들어지는 구조를 갖게 된다.
+
+그래서 이를 해결하기 위해선 Context API를 사용하면 되는데, 그러면 props에 관한 문제는 해결되지만 동적인 컨텐츠일 경우엔 부적합하다.
+왜냐하면 페이지 내 컨텐츠들은 정적이 아닌 데이터가 바뀌는 동적인 경우가 많기 때문이다. 하지만 SWR을 사용하면 이러한 문제들을 완벽히 해결해준다.
+
+```jsx
+// 페이지 컴포넌트
+function Page() {
+  return (
+    <div>
+      <Navbar />
+      <Content />
+    </div>
+  );
+}
+
+// 자식 컴포넌트
+function Navbar() {
+  return (
+    <div>
+      <Avatar />
+    </div>
+  );
+}
+
+function Content() {
+  const { user, isLoading } = useUserMy();
+  if (isLoading) return <Spinner />;
+  return <h1>Welcome back, {user.name}</h1>;
+}
+
+function Avatar() {
+  const { user, isLoading } = useUserMy();
+  if (isLoading) return <Spinner />;
+  return <img src={user.avatar} alt={user.name} />;
+}
+```
+
+커스텀 SWR 훅으로 만든 useUserMy를 사용해서 해결한 것을 볼 수 있다. 또한, 여러번 호출하는 것에 대해 신경을 쓸 필요가 전혀 없다.
+왜냐하면 key값을 통해 호출에 대한 중복을 제거해주기 때문에 사실상 1번만 요청하기 때문이다.
+
+또한 아래와 같이 사용해도 동작을 한다. 최상위에서 useSWR을 호출해서 데이터를 패칭하고 자식 컴포넌트에선 fetcher 함수 없이 key값만 사용해서 호출해도 동작한다.
+
+```jsx
+import React, { useEffect } from "react";
+import useSWR from "swr";
+
+function Home() {
+  const fetcher = async () => {
+    return await fetch(`https://dodamapi.b1nd.com/meal/month?year=2024`)
+      .then((res) => res.json())
+      .catch(() => null);
+  };
+
+  const { data } = useSWR("/api/data", fetcher);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  return (
+    <>
+      <Test />
+    </>
+  );
+}
+
+function Test() {
+  // 부모 컴포넌트가 fetcher를 사용했기에 자식 컴포넌트에선 key만 있으면 됨.
+  const { data } = useSWR("/api/data");
+
+  useEffect(() => {
+    console.log(data, "2");
+  }, [data]);
+
+  return <>테스트</>;
+}
+
+export default Home;
+```
+
+**자동갱신**
+
+SWR을 사용하면 페이지에 다시 포커스하거나 탭을 전환할 때, 자동으로 업데이트 해준다.
+오래된 모바일 탭이나 슬립모드인 노트북과 같은 경우에서도 데이터를 새로고침하는데 유용하다.
+
+브라우저를 포커스할 때 아래영상처럼 갱신된다.
+
+<video controls>
+  <source src="/video/20241127/1.mp4" type="video/mp4" />
+</video>
+
+이 뿐만 아니라, 사용자가 인터넷을 껐다가 재연결할 시에도 자동으로 갱신되며 옵션을 설정해 자동갱신을 비활성화할 수도 있다.
+
+**조건부로 데이터 가져오기**
+
+useSWR을 사용하면 key값을 설정할 수 있는데 위에서 언급했듯 상황에 따라 문자열뿐만 아니라 함수, null 같은 값이 들어갈 수가 있는데,
+만약 null이나 undefined같은 falsy한 값이 들어가면 어떻게 될까? 바로 **요청을 하지 않는다.**
+
+```jsx
+const { data } = useSWR(shouldFetch ? "/api/data" : null, fetcher);
+```
+
+이렇게 shouldFetch가 true면 key가 "/api/data"로 설정되어 요청을 하게 되고 아니라면 null이 되기에 요청을 하지 않게 된다.
+그럼 만약 아래코드와 같은 상황은 어떻게 될까?
+
+```jsx
+const { data: posts } = useSWR("/api/posts", getPost);
+const { data: postById } = useSWR(`/api/post/${post.id}`, fetcher);
+```
+
+posts를 요청하는 동안 post.id는 undefined이기 때문에 postById도 잘못된 요청을 보내게 된다.
+이후 posts 데이터가 받아져 post.id가 업데이트되면, SWR이 key가 바뀌었다고 판단해 postById를 다시 요청하게 되어 총 3번 요청이 발생한다.
+이를 막으려면 아래코드처럼 수정해야한다.
+
+```jsx
+const { data: posts } = useSWR("/api/posts", getPost);
+const { data: postById } = useSWR(
+  posts ? `/api/post/${post.id}` : null,
+  fetcher
+);
+```
+
+이렇게 수정하면 posts 값이 없을 땐 postById의 key는 null이라서 요청 자체를 안하게 되므로 2번 요청하여 알맞게 동작할 수 있게 된다.
+
+**prefetching**
+
+SWR에선 preload라는 모듈을 제공해주는데 이것을 사용하면 데이터를 prefetching하고 결과를 캐시에 저장한다.
+
+```jsx
+preload(key, fetcher);
+```
+
+key와 fetcher를 매개변수로 받으며 컴포넌트 내부, 외부에서 둘다 사용이 가능하다.
+
+**Suspense와 함께**
+
+React-Query처럼 React Suspense, ErrorBoundary와 함께 사용이 가능하다. useSWR 옵션부분에 suspense를 true로 설정해준다.
+
+```jsx
+import useSWR from "swr";
+
+function Profile() {
+  const { data: user } = useSWR("/api/user", fetcher, { suspense: true });
+  const { data: movies } = useSWR("/api/movies", fetcher, { suspense: true });
+
+  return (
+    <div>
+      <User user={user} />
+      <Movies movies={movies} />
+    </div>
+  );
+}
+
+// ErrorBoundary와 Suspense를 함께 사용
+function Page() {
+  return (
+    <ErrorBoundary fallback={<h2>Could not fetch posts.</h2>}>
+      <Suspense fallback={<h1>Loading posts...</h1>}>
+        <Profile />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+### 정리
+
+**1. 간단하고 직관적인 API**
+
+- useSWR 훅을 사용해 데이터 패칭을 쉽게 구현 가능.
+- 조건부 요청, 데이터 캐싱, 갱신 등을 최소한의 코드로 구현할 수 있음.
+
+**2. 자동 갱신 (Revalidation)**
+
+- 데이터가 변경되었을 가능성을 감안해 자동으로 데이터를 최신 상태로 유지.
+- 예: 브라우저 탭 활성화, 네트워크 재연결 시 자동 갱신.
+
+**3. 중복 요청 방지**
+
+- 동일한 키를 가진 요청이 동시에 발생하면 하나로 병합하여 네트워크 자원 절약.
+
+**4. 조건부 요청 지원**
+
+- 특정 조건을 만족할 때만 요청을 보낼 수 있어 불필요한 네트워크 요청을 줄임.
+
+### 마무리
+
+이렇게 SWR에 대해 알아보았다. 사실 1달 전에 기업 면접을 볼때 SWR 사용해봤냐고 질문을 받았었는데 사용해본 적이 없어서 개념만 안다고 말했던
+기억이 있다. 1달이 지난 지금 정리하는게 살짝 머쓱하지만 앞으론 생각나면 DFS, BFS 글 적은 것처럼 바로바로 글을 포스팅할 수 있도록 노력해야겠다.
+
+### 레퍼런스
+
+- https://swr.vercel.app/ko
+- https://many.tistory.com/104
+- https://velog.io/@hyeseong0914/SWR
